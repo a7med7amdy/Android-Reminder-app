@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/holo_red_light"
+    android:maxWidth="400dp"
+    android:maxHeight="800dp"
+    android:minWidth="200dp"
+    android:minHeight="200dp">
+
+    <Button
+        android:id="@+id/cancelbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@color/cardview_shadow_start_color"
+        android:text="cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/commitbutton"
+        app:layout_constraintHorizontal_bias="0.388"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/importantcheck"
+        app:layout_constraintVertical_bias="0.185" />
+
+    <Button
+        android:id="@+id/commitbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@color/cardview_shadow_start_color"
+        android:text="commit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/importantcheck"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/ReminderText"
+        android:layout_width="1000dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/material_on_background_emphasis_high_type"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="add your reminder here"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/importantcheck"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/reminderview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorAccent"
+        android:text="New Reminder"
+        app:layout_constraintBottom_toTopOf="@+id/ReminderText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.123"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <TextView
+        android:id="@+id/editreminderview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorAccent"
+        android:text="Edit Reminder"
+        app:layout_constraintBottom_toTopOf="@+id/ReminderText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.123"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <CheckBox
+        android:id="@+id/importantcheck"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="80dp"
+        android:background="@color/cardview_dark_background"
+        android:text="important"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.266"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
