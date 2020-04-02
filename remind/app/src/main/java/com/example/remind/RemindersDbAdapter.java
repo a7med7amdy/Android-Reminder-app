@@ -13,8 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-
-
 public class RemindersDbAdapter {
 
     //these are the column names
@@ -59,36 +57,51 @@ public class RemindersDbAdapter {
 
     //TODO implement the function createReminder() which take the name as the content of the reminder and boolean important...note that the id will be created for you automatically
     public void createReminder(String name, boolean important) {
-
+        int val = (important) ? 1 : 0;
+        //String query = "INSERT INTO " + TABLE_NAME + " ( " + COL_CONTENT + " , " + COL_IMPORTANT + " ) VALUES ( " + name + " , " + val + " ); " ;
+       // Cursor c = mDb.rawQuery(query, null);
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(COL_CONTENT, name);
+        contentValue.put(COL_IMPORTANT, val);
+        mDb.insert(TABLE_NAME, null, contentValue);
     }
     //TODO overloaded to take a reminder
     public long createReminder(Reminder reminder) {
+        ContentValues contentValue = new ContentValues();
+        contentValue.put(COL_CONTENT, reminder.getContent());
+        contentValue.put(COL_IMPORTANT, reminder.getImportant());
+        mDb.insert(TABLE_NAME, null, contentValue);
         return 0;
     }
 
     //TODO implement the function fetchReminderById() to get a certain reminder given its id
     public Reminder fetchReminderById(int id) {
-        return null;
+        String query = "SELECT " + COL_CONTENT + " , " + COL_IMPORTANT + " FROM " + TABLE_NAME + " WHERE " + COL_ID + " = " + id + "; " ;
+        Cursor cursor = mDb.rawQuery(query, null);
+        Reminder R = new Reminder(cursor.getInt(0), cursor.getString(1), cursor.getInt(2));
+        return R;
     }
 
 
     //TODO implement the function fetchAllReminders() which get all reminders
     public Cursor fetchAllReminders() {
-        return null;
+        Cursor cursor = mDb.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        return cursor;
     }
 
     //TODO implement the function updateReminder() to update a certain reminder
     public void updateReminder(Reminder reminder) {
-
+        mDb.execSQL("update " + TABLE_NAME + " set " + COL_CONTENT + " = '" + reminder.getContent() + "', " + COL_IMPORTANT + " = '" + reminder.getImportant() + "' where " + COL_ID + " = '" + reminder.getId() + "'");
+        //mDb.close();
     }
     //TODO implement the function deleteReminderById() to delete a certain reminder given its id
     public void deleteReminderById(int nId) {
-
+        mDb.execSQL("DELETE from " + TABLE_NAME + " where " + COL_ID + " = " + nId );
     }
 
     //TODO implement the function deleteAllReminders() to delete all reminders
     public void deleteAllReminders() {
-
+        mDb.execSQL("DELETE from " + TABLE_NAME);
     }
 
 

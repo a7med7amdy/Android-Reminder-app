@@ -2,6 +2,7 @@ package com.example.remind;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import com.google.android.material.chip.ChipGroup;
@@ -40,13 +41,12 @@ public class MainActivity extends AppCompatActivity {
     static public int reminderId=0;
     private int checked=0;
     private String reminderText;
+    //Context C = new Context();
+    RemindersDbAdapter DB = new RemindersDbAdapter(getApplicationContext());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
 
         final ListView list = findViewById(R.id.list);
         final ArrayList<String> arrayList = new ArrayList<>();
@@ -138,6 +138,10 @@ public class MainActivity extends AppCompatActivity {
 
                                             //TODO
                                             //store the edited reminder to database
+                                            Reminder R = new Reminder(reminderId , reminderText, checked);
+                                            DB.open();
+                                            DB.updateReminder(R);
+                                            DB.close();
 
                                             arrayList.set(position,reminderText);
                                             Context c=getApplicationContext();
@@ -146,7 +150,12 @@ public class MainActivity extends AppCompatActivity {
                                             dialog3.dismiss();
                                             //TODO
                                             //populate the row in list view
-
+//                                            Cursor cursor = DB.fetchAllReminders();
+//                                            if (cursor.getCount() > 0) {
+//                                                for (int i = 0; i < cursor.getCount(); i++) {
+//                                                    cursor.moveToNext();
+//                                                }
+                                            arrayList.add( reminderId, reminderText );
                                         }
                                         else{
                                             System.out.print(reminderText);
@@ -174,6 +183,9 @@ public class MainActivity extends AppCompatActivity {
                                     list.setAdapter(arrayAdapter2);
                                     //TODO
                                     //Delete reminder from the DB
+                                    DB.open();
+                                    DB.deleteReminderById(reminderId);
+                                    DB.close();
                             }
                         }
                     });
@@ -271,12 +283,15 @@ public class MainActivity extends AppCompatActivity {
 
                         //TODO
                         //store reminder in database
+                        DB.open();
+                        DB.createReminder(rem);
+                        DB.close();
                         dialog.dismiss();
                         final int N = 1; // total number of textviews to add
 
                         //TODO
                         //populate the row in list view
-
+                          //arrayList.add(reminderText );
                     }
                     else{
                         Toast.makeText(MainActivity.this,"Error: no entered reminders",Toast.LENGTH_SHORT).show();
