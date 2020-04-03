@@ -41,26 +41,32 @@ public class MainActivity extends AppCompatActivity {
     static public int reminderId=0;
     private int checked=0;
     private String reminderText;
-    //Context C = new Context();
-    RemindersDbAdapter DB = new RemindersDbAdapter(getApplicationContext());
+    RemindersDbAdapter DB;
+    RemindersSimpleCursorAdapter RS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DB = new RemindersDbAdapter(MainActivity.this);
+        DB.open();
+        Cursor cursor = DB.fetchAllReminders();
+        RS = new RemindersSimpleCursorAdapter(MainActivity.this, cursor);
 
         final ListView list = findViewById(R.id.list);
-        final ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("JAVA");
-        arrayList.add("ANDROID");
-        arrayList.add("C Language");
-        arrayList.add("CPP Language");
-        arrayList.add("Go Language");
-        arrayList.add("AVN SYSTEMS");
+        list.setAdapter(RS);
+//        final ListView list = findViewById(R.id.list);
+//        final ArrayList<String> arrayList = new ArrayList<>();
+//        arrayList.add("JAVA");
+//        arrayList.add("ANDROID");
+//        arrayList.add("C Language");
+//        arrayList.add("CPP Language");
+//        arrayList.add("Go Language");
+//        arrayList.add("AVN SYSTEMS");
 
         //doing the adapter manually
         //make custom one for me , Ayat should use the given on
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayList);
-        list.setAdapter(arrayAdapter);
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayList);
+        //list.setAdapter(arrayAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -72,13 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
                     AlertDialog.Builder mbuilderEditDelet= new AlertDialog.Builder(MainActivity.this);
                     ArrayAdapter<String> delete_edit_arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, new String[]{"Edit","Delete"});
-                   delete_edit_list.setAdapter(delete_edit_arrayAdapter);
+                    delete_edit_list.setAdapter(delete_edit_arrayAdapter);
                     delete_edit_arrayAdapter.notifyDataSetChanged();
                     mbuilderEditDelet.setView(mview);
 
                     final AlertDialog dialog2= mbuilderEditDelet.create();
-
-
                     dialog2.show();
 
                     delete_edit_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
                                 mbuilderEdit.setView(mview);
 
                                 final AlertDialog dialog3= mbuilderEdit.create();
-
-
-
                                 dialog3.show();
                                 final EditText reminder= mview.findViewById(R.id.ReminderText);
                                 reminder.setText(clickedItem);
@@ -139,23 +140,21 @@ public class MainActivity extends AppCompatActivity {
                                             //TODO
                                             //store the edited reminder to database
                                             Reminder R = new Reminder(reminderId , reminderText, checked);
-                                            DB.open();
                                             DB.updateReminder(R);
-                                            DB.close();
-
-                                            arrayList.set(position,reminderText);
-                                            Context c=getApplicationContext();
-                                            ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1, arrayList);
-                                            list.setAdapter(arrayAdapter2);
                                             dialog3.dismiss();
+
+                                            Cursor cursor_edit = DB.fetchAllReminders();
+                                            RS.changeCursor(cursor_edit);
+                                      //      ListView list = findViewById(R.id.list);
+                                      //      list.setAdapter(RS);
+
+
+                        //                    arrayList.set(position,reminderText);
+                         //                   Context c=getApplicationContext();
+                         //                   ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1, arrayList);
+                        //                    list.setAdapter(arrayAdapter2);
                                             //TODO
                                             //populate the row in list view
-//                                            Cursor cursor = DB.fetchAllReminders();
-//                                            if (cursor.getCount() > 0) {
-//                                                for (int i = 0; i < cursor.getCount(); i++) {
-//                                                    cursor.moveToNext();
-//                                                }
-                                            arrayList.add( reminderId, reminderText );
                                         }
                                         else{
                                             System.out.print(reminderText);
@@ -176,16 +175,20 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else {
                                 // he choose delete
-                                    arrayList.remove(position);
-                                    Context c= getApplicationContext();
-                                    ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1, arrayList);
-                                   arrayAdapter2.notifyDataSetChanged();
-                                    list.setAdapter(arrayAdapter2);
+                            //        arrayList.remove(position);
+                             //       Context c= getApplicationContext();
+                             //       ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1, arrayList);
+                             //      arrayAdapter2.notifyDataSetChanged();
+                              //      list.setAdapter(arrayAdapter2);
                                     //TODO
                                     //Delete reminder from the DB
-                                    DB.open();
                                     DB.deleteReminderById(reminderId);
-                                    DB.close();
+                                   // dialog.dismiss();
+                                    Cursor cursor_d = DB.fetchAllReminders();
+                                    RS.changeCursor(cursor_d);
+                                    ListView list = findViewById(R.id.list);
+                                    list.setAdapter(RS);
+
                             }
                         }
                     });
@@ -283,11 +286,14 @@ public class MainActivity extends AppCompatActivity {
 
                         //TODO
                         //store reminder in database
-                        DB.open();
                         DB.createReminder(rem);
-                        DB.close();
+
                         dialog.dismiss();
-                        final int N = 1; // total number of textviews to add
+                        Cursor cursor_add = DB.fetchAllReminders();
+
+                        RS.changeCursor(cursor_add);
+                        ListView list = findViewById(R.id.list);
+                        list.setAdapter(RS);
 
                         //TODO
                         //populate the row in list view

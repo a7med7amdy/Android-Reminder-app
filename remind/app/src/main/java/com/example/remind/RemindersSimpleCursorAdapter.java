@@ -1,51 +1,42 @@
-//package com.example.remind;
-//
-//import android.content.Context;
-//import android.database.Cursor;
-//import android.support.v4.content.ContextCompat;
-//import android.support.v4.widget.SimpleCursorAdapter;
-//import android.view.View;
-//import android.view.ViewGroup;
-//
-////import androidx.cursoradapter.widget.SimpleCursorAdapter;
-//import android.widget.SimpleCursorAdapter;
-//
-///**
-// * Created by engMa_000 on 2017-04-03.
-// */
-//
-//public class RemindersSimpleCursorAdapter extends SimpleCursorAdapter {
-//
-//    public RemindersSimpleCursorAdapter(Context context, int layout, Cursor c, String[]
-//            from, int[] to, int flags) {
-//        super(context, layout, c, from, to, flags);
-//    }
-//    //to use a viewholder, you must override the following two methods and define a ViewHolder class
-//    @Override
-//    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-//        return super.newView(context, cursor, parent);
-//    }
-//    @Override
-//    public void bindView(View view, Context context, Cursor cursor) {
-//        super.bindView(view, context, cursor);
-//        ViewHolder holder = (ViewHolder) view.getTag();
-//        if (holder == null) {
-//            holder = new ViewHolder();
-//            holder.colImp = cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_IMPORTANT);
-//            holder.listTab = view.findViewById(R.id.row_tab);
-//            view.setTag(holder);
-//        }
-//        if (cursor.getInt(holder.colImp) > 0) {
-//            holder.listTab.setBackgroundColor(ContextCompat.getColor(context,R.color.orange));
-//        } else {
-//            holder.listTab.setBackgroundColor(ContextCompat.getColor(context,R.color.green));
-//        }
-//    }
-//    static class ViewHolder {
-//        //store the column index
-//        int colImp;
-//        //store the view
-//        View listTab;
-//    }
-//
-//}
+package com.example.remind;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
+/**
+ * Created by engMa_000 on 2017-04-03.
+ */
+
+public class RemindersSimpleCursorAdapter extends CursorAdapter {
+
+    public RemindersSimpleCursorAdapter(Context context, Cursor c) {
+        super(context, c, 0);
+    }
+    //to use a viewholder, you must override the following two methods and define a ViewHolder class
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        return LayoutInflater.from(context).inflate(R.layout.reminders_row,parent,false);
+    }
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        TextView conentView=(TextView)view.findViewById(R.id.text_content);
+        int contentIndex=cursor.getColumnIndex(RemindersDbAdapter.COL_CONTENT);
+        String content =cursor.getString(contentIndex);
+        conentView.setText(content);
+        int importantIndex = cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_IMPORTANT);
+        if (cursor.getInt(importantIndex) > 0) {
+            view.setBackgroundColor(ContextCompat.getColor(context,R.color.pinky));
+        } else {
+            view.setBackgroundColor(ContextCompat.getColor(context,R.color.black));
+        }
+    }
+
+
+}
