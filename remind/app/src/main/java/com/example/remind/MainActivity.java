@@ -60,12 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
+                    //if item in list view is clicked
                     final Cursor cursor = (Cursor) list.getItemAtPosition(position);
                     final String clickedItem = cursor.getString(1);
                     updatedDeletedId= id;
                     View mview = getLayoutInflater().inflate(R.layout.dialog_custom_delete_edit,null);
                     final ListView delete_edit_list = mview.findViewById(R.id.delete_edit_list);
 
+                    //creating the alert dialog of edit, delete
                     AlertDialog.Builder mbuilderEditDelet= new AlertDialog.Builder(MainActivity.this);
                     ArrayAdapter<String> delete_edit_arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, new String[]{"Edit","Delete"});
                     delete_edit_list.setAdapter(delete_edit_arrayAdapter);
@@ -80,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
                         public void onItemClick(AdapterView<?> parent, View view, int position1, long id) {
                             dialog2.dismiss();
                             String itemSelected = (String) delete_edit_list.getItemAtPosition(position1);
+                            //choose from dialog
                             if (itemSelected == "Edit") {
                                 AlertDialog.Builder mbuilderEdit= new AlertDialog.Builder(MainActivity.this);
                                 View mview = getLayoutInflater().inflate(R.layout.custom_dialog,null);
                                 mbuilderEdit.setView(mview);
-//                                CheckBox cb= (CheckBox)findViewById(R.id.importantcheck);
                                 final AlertDialog dialog3= mbuilderEdit.create();
                                 final EditText reminder= mview.findViewById(R.id.ReminderText);
                                 reminder.setText(clickedItem);
@@ -171,12 +173,8 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                             else {
-                                // he choose delete
-                            //        arrayList.remove(position);
-                             //       Context c= getApplicationContext();
-                             //       ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1, arrayList);
-                             //      arrayAdapter2.notifyDataSetChanged();
-                              //      list.setAdapter(arrayAdapter2);
+                                // he chooses delete
+
                                     //TODO
                                     //Delete reminder from the DB
                                     DB.deleteReminderById((int)updatedDeletedId);
@@ -293,9 +291,7 @@ public class MainActivity extends AppCompatActivity {
                         ListView list = findViewById(R.id.list);
                         list.setAdapter(RS);
 
-                        //TODO
-                        //populate the row in list view
-                          //arrayList.add(reminderText );
+
                     }
                     else{
                         Toast.makeText(MainActivity.this,"Error: no entered reminders",Toast.LENGTH_SHORT).show();
