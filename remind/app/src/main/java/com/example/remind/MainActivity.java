@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                    Reminder item = DB.fetchReminderById((int)id);
-                    final String content = item.getContent();
-                    final int isImportant = item.getImportant();
+//                    Reminder item = DB.fetchReminderById((int)id);
+//                    final String content = item.getContent();
+//                    final int isImportant = item.getImportant();
 
                     //if item in list view is clicked
                     final Cursor cursor = (Cursor) list.getItemAtPosition(position);
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                                 AlertDialog.Builder mbuilderEdit= new AlertDialog.Builder(MainActivity.this);
                                 View mview = getLayoutInflater().inflate(R.layout.custom_dialog,null);
                                 mbuilderEdit.setView(mview);
-<
+
                                 final AlertDialog dialog3= mbuilderEdit.create();
                                 final EditText reminder= mview.findViewById(R.id.ReminderText);
                                 reminder.setText(clickedItem);
@@ -144,8 +144,7 @@ public class MainActivity extends AppCompatActivity {
                                     public void onClick(View v) {
                                         if(reminder.getText().length() > 0) {
 
-                                            //TODO
-                                            //store the edited reminder to database
+
                                             Reminder RE = new Reminder((int)updatedDeletedId , reminderText, checked);
                                             checked=0;
                                             DB.updateReminder(RE);
@@ -182,8 +181,7 @@ public class MainActivity extends AppCompatActivity {
                             else {
                                 // he chooses delete
 
-                                    //TODO
-                                    //Delete reminder from the DB
+
                                     DB.deleteReminderById((int)updatedDeletedId);
                                    // dialog.dismiss();
                                     Cursor cursor_d = DB.fetchAllReminders();
@@ -287,8 +285,6 @@ public class MainActivity extends AppCompatActivity {
                         checked=0;
                         reminderId++;
 
-                        //TODO
-                        //store reminder in database
                         DB.createReminder(rem);
 
                         dialog.dismiss();
