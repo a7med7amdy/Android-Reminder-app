@@ -71,8 +71,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
-                    final String clickedItem = (String) list.getItemAtPosition(position);
-
+//                    final String clickedItem = (String) list.getItemAtPosition(position);
+                    Cursor cursor = (Cursor) list.getItemAtPosition(position);
+                    final String clickedItem = cursor.getString(1);
+//                    cursor.getString(cursor.getColumnIndex(RemindersDbAdapter.));
+//                    final String clickedItem=list.getSelectedItem().toString();
                     View mview = getLayoutInflater().inflate(R.layout.dialog_custom_delete_edit,null);
                     final ListView delete_edit_list = mview.findViewById(R.id.delete_edit_list);
 
@@ -140,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                                             //TODO
                                             //store the edited reminder to database
                                             Reminder R = new Reminder(reminderId , reminderText, checked);
+                                            checked=0;
                                             DB.updateReminder(R);
                                             dialog3.dismiss();
 
@@ -282,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if(reminder.getText().length() > 0) {
                         Reminder rem = new Reminder(reminderId, reminderText, checked);
+                        checked=0;
                         reminderId++;
 
                         //TODO
