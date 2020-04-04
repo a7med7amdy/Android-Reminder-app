@@ -93,14 +93,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                                //  عايز اعرف هو اللي دوست عليه دا علشان اعمله edit كان important ولا لا علشان لو كان important يظهر في ال box معمولله checked
-                             //   cursor.moveToNext();
-                             //   String content = cursor.getString(INDEX_CONTENT);
-//                                Boolean isimportant= cursor.....
-//                                if(isimportant)
-//                                    important.setChecked(true);
-
-
+                                //if the item wanna be edited is important, set its checker
+                                int importantIndex = cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_IMPORTANT);
+                                if(cursor.getInt(importantIndex) > 0)
+                                    important.setChecked(true);
 
                                 Button cancel= mview.findViewById(R.id.cancelbutton);
                                 Button commit=mview.findViewById(R.id.commitbutton);
