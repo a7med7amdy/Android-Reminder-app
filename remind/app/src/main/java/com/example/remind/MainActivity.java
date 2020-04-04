@@ -104,8 +104,10 @@ public class MainActivity extends AppCompatActivity {
 
                                 //if the item wanna be edited is important, set its checker
                                 int importantIndex = cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_IMPORTANT);
-                                if(cursor.getInt(importantIndex) > 0)
+                                if(cursor.getInt(importantIndex) > 0) {
                                     important.setChecked(true);
+                                    checked=1;
+                                }
 
                                 Button cancel= mview.findViewById(R.id.cancelbutton);
                                 Button commit=mview.findViewById(R.id.commitbutton);
@@ -119,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                                              if(isChecked){
                                                  checked=1;
                                              }
+                                             else
+                                                 checked=0;
                                          }
                                      }
                                 );
