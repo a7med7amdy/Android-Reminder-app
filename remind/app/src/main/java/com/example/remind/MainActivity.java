@@ -41,41 +41,28 @@ public class MainActivity extends AppCompatActivity {
     static public int reminderId=0;
     private int checked=0;
     private String reminderText;
-    RemindersDbAdapter DB;
-    RemindersSimpleCursorAdapter RS;
+    private RemindersDbAdapter DB;
+    private RemindersSimpleCursorAdapter RS;
+    long updatedDeletedId = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DB = new RemindersDbAdapter(MainActivity.this);
         DB.open();
-        Cursor cursor = DB.fetchAllReminders();
-        RS = new RemindersSimpleCursorAdapter(MainActivity.this, cursor);
-
+        Cursor cursor1 = DB.fetchAllReminders();
+        RS = new RemindersSimpleCursorAdapter(MainActivity.this, cursor1);
+        RS.changeCursor(cursor1);
         final ListView list = findViewById(R.id.list);
         list.setAdapter(RS);
-//        final ListView list = findViewById(R.id.list);
-//        final ArrayList<String> arrayList = new ArrayList<>();
-//        arrayList.add("JAVA");
-//        arrayList.add("ANDROID");
-//        arrayList.add("C Language");
-//        arrayList.add("CPP Language");
-//        arrayList.add("Go Language");
-//        arrayList.add("AVN SYSTEMS");
 
-        //doing the adapter manually
-        //make custom one for me , Ayat should use the given on
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, arrayList);
-        //list.setAdapter(arrayAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
-//                    final String clickedItem = (String) list.getItemAtPosition(position);
                     final Cursor cursor = (Cursor) list.getItemAtPosition(position);
                     final String clickedItem = cursor.getString(1);
-//                    cursor.getString(cursor.getColumnIndex(RemindersDbAdapter.));
-//                    final String clickedItem=list.getSelectedItem().toString();
+                    updatedDeletedId= id;
                     View mview = getLayoutInflater().inflate(R.layout.dialog_custom_delete_edit,null);
                     final ListView delete_edit_list = mview.findViewById(R.id.delete_edit_list);
 
@@ -103,12 +90,16 @@ public class MainActivity extends AppCompatActivity {
                                 reminder.setText(clickedItem);
                                 CheckBox important= mview.findViewById(R.id.importantcheck);
 
-                                //get if it is important or not ()
 
-//                                isimportanr= cursor.get.....
+
+
+                                //  عايز اعرف هو اللي دوست عليه دا علشان اعمله edit كان important ولا لا علشان لو كان important يظهر في ال box معمولله checked
+                             //   cursor.moveToNext();
+                             //   String content = cursor.getString(INDEX_CONTENT);
+//                                Boolean isimportant= cursor.....
 //                                if(isimportant)
 //                                    important.setChecked(true);
-//
+
 
 
                                 Button cancel= mview.findViewById(R.id.cancelbutton);
@@ -150,23 +141,21 @@ public class MainActivity extends AppCompatActivity {
 
                                             //TODO
                                             //store the edited reminder to database
-                                            Reminder r = new Reminder(reminderId , reminderText, checked);
+                                            Reminder RE = new Reminder((int)updatedDeletedId , reminderText, checked);
                                             checked=0;
-                                            DB.updateReminder(r);
+                                            DB.updateReminder(RE);
                                             dialog3.dismiss();
 
                                             Cursor cursor_edit = DB.fetchAllReminders();
                                             RS.changeCursor(cursor_edit);
+                                            RS.notifyDataSetChanged();
                                             ListView list = findViewById(R.id.list);
-                                      //      list.setAdapter(RS);
+                                            list.setAdapter(RS);
 
 
-                        //                    arrayList.set(position,reminderText);
-                         //                   Context c=getApplicationContext();
-                         //                   ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(c,android.R.layout.simple_list_item_1, arrayList);
-                        //                    list.setAdapter(arrayAdapter2);
-                                            //TODO
-                                            //populate the row in list view
+
+
+
                                         }
                                         else{
                                             System.out.print(reminderText);
@@ -194,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                               //      list.setAdapter(arrayAdapter2);
                                     //TODO
                                     //Delete reminder from the DB
-                                    DB.deleteReminderById(reminderId);
+                                    DB.deleteReminderById((int)updatedDeletedId);
                                    // dialog.dismiss();
                                     Cursor cursor_d = DB.fetchAllReminders();
                                     RS.changeCursor(cursor_d);
