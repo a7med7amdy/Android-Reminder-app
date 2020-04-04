@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
 //                    final String clickedItem = (String) list.getItemAtPosition(position);
-                    Cursor cursor = (Cursor) list.getItemAtPosition(position);
+                    final Cursor cursor = (Cursor) list.getItemAtPosition(position);
                     final String clickedItem = cursor.getString(1);
 //                    cursor.getString(cursor.getColumnIndex(RemindersDbAdapter.));
 //                    final String clickedItem=list.getSelectedItem().toString();
@@ -97,15 +97,23 @@ public class MainActivity extends AppCompatActivity {
                                 AlertDialog.Builder mbuilderEdit= new AlertDialog.Builder(MainActivity.this);
                                 View mview = getLayoutInflater().inflate(R.layout.custom_dialog,null);
                                 mbuilderEdit.setView(mview);
-
+//                                CheckBox cb= (CheckBox)findViewById(R.id.importantcheck);
                                 final AlertDialog dialog3= mbuilderEdit.create();
-                                dialog3.show();
                                 final EditText reminder= mview.findViewById(R.id.ReminderText);
                                 reminder.setText(clickedItem);
                                 CheckBox important= mview.findViewById(R.id.importantcheck);
+
+                                //get if it is important or not ()
+
+//                                isimportanr= cursor.get.....
+//                                if(isimportant)
+//                                    important.setChecked(true);
+//
+
+
                                 Button cancel= mview.findViewById(R.id.cancelbutton);
                                 Button commit=mview.findViewById(R.id.commitbutton);
-
+                                dialog3.show();
                                 TextView tv2= (TextView) mview.findViewById(R.id.editreminderview);
                                 tv2.setVisibility(View.VISIBLE);
 
