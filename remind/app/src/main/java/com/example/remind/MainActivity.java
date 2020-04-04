@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private String reminderText;
     private RemindersDbAdapter DB;
     private RemindersSimpleCursorAdapter RS;
+    long updatedDeletedId = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
                     final Cursor cursor = (Cursor) list.getItemAtPosition(position);
                     final String clickedItem = cursor.getString(1);
-
+                    updatedDeletedId= id;
                     View mview = getLayoutInflater().inflate(R.layout.dialog_custom_delete_edit,null);
                     final ListView delete_edit_list = mview.findViewById(R.id.delete_edit_list);
 
@@ -92,10 +93,16 @@ public class MainActivity extends AppCompatActivity {
                                 reminder.setText(clickedItem);
                                 CheckBox important= mview.findViewById(R.id.importantcheck);
 
-                                if(isImportant == 1)
+        //                        if(isImportant == 1)
+        //                            important.setChecked(true);
+        //                        else
+       //                             important.setChecked(false);
+
+
+                                //if the item wanna be edited is important, set its checker
+                                int importantIndex = cursor.getColumnIndexOrThrow(RemindersDbAdapter.COL_IMPORTANT);
+                                if(cursor.getInt(importantIndex) > 0)
                                     important.setChecked(true);
-                                else
-                                    important.setChecked(false);
 
                                 Button cancel= mview.findViewById(R.id.cancelbutton);
                                 Button commit=mview.findViewById(R.id.commitbutton);
@@ -136,15 +143,19 @@ public class MainActivity extends AppCompatActivity {
 
                                             //TODO
                                             //store the edited reminder to database
-                                            Reminder RE = new Reminder(reminderId , reminderText, checked);
+                                            Reminder RE = new Reminder((int)updatedDeletedId , reminderText, checked);
                                             checked=0;
                                             DB.updateReminder(RE);
                                             dialog3.dismiss();
 
                                             Cursor cursor_edit = DB.fetchAllReminders();
                                             RS.changeCursor(cursor_edit);
+                                            RS.notifyDataSetChanged();
                                             ListView list = findViewById(R.id.list);
                                             list.setAdapter(RS);
+
+
+
 
 
                                         }
@@ -174,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                               //      list.setAdapter(arrayAdapter2);
                                     //TODO
                                     //Delete reminder from the DB
-                                    DB.deleteReminderById(reminderId);
+                                    DB.deleteReminderById((int)updatedDeletedId);
                                    // dialog.dismiss();
                                     Cursor cursor_d = DB.fetchAllReminders();
                                     RS.changeCursor(cursor_d);
