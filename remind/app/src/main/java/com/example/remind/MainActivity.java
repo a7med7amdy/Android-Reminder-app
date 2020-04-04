@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                    Reminder item = DB.fetchReminderById((int)id);
+                    final String content = item.getContent();
+                    final int isImportant = item.getImportant();
 
                     final Cursor cursor = (Cursor) list.getItemAtPosition(position);
                     final String clickedItem = cursor.getString(1);
@@ -83,19 +86,16 @@ public class MainActivity extends AppCompatActivity {
                                 AlertDialog.Builder mbuilderEdit= new AlertDialog.Builder(MainActivity.this);
                                 View mview = getLayoutInflater().inflate(R.layout.custom_dialog,null);
                                 mbuilderEdit.setView(mview);
-//                                CheckBox cb= (CheckBox)findViewById(R.id.importantcheck);
+
                                 final AlertDialog dialog3= mbuilderEdit.create();
                                 final EditText reminder= mview.findViewById(R.id.ReminderText);
                                 reminder.setText(clickedItem);
                                 CheckBox important= mview.findViewById(R.id.importantcheck);
 
-                             //   cursor.moveToNext();
-                             //   String content = cursor.getString(INDEX_CONTENT);
-//                                Boolean isimportant= cursor
-//                                if(isimportant)
-//                                    important.setChecked(true);
-
-
+                                if(isImportant == 1)
+                                    important.setChecked(true);
+                                else
+                                    important.setChecked(false);
 
                                 Button cancel= mview.findViewById(R.id.cancelbutton);
                                 Button commit=mview.findViewById(R.id.commitbutton);
@@ -288,9 +288,6 @@ public class MainActivity extends AppCompatActivity {
                         ListView list = findViewById(R.id.list);
                         list.setAdapter(RS);
 
-                        //TODO
-                        //populate the row in list view
-                          //arrayList.add(reminderText );
                     }
                     else{
                         Toast.makeText(MainActivity.this,"Error: no entered reminders",Toast.LENGTH_SHORT).show();
