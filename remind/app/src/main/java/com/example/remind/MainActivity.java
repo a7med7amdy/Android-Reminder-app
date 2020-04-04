@@ -150,14 +150,14 @@ public class MainActivity extends AppCompatActivity {
 
                                             //TODO
                                             //store the edited reminder to database
-                                            Reminder R = new Reminder(reminderId , reminderText, checked);
+                                            Reminder r = new Reminder(reminderId , reminderText, checked);
                                             checked=0;
-                                            DB.updateReminder(R);
+                                            DB.updateReminder(r);
                                             dialog3.dismiss();
 
                                             Cursor cursor_edit = DB.fetchAllReminders();
                                             RS.changeCursor(cursor_edit);
-                                      //      ListView list = findViewById(R.id.list);
+                                            ListView list = findViewById(R.id.list);
                                       //      list.setAdapter(RS);
 
 
